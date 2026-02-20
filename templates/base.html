@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Todo List</title>       
+        
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+    </head>
+    <body>
+        <form id = "Task" class="pure-form pure-form-aligned" action="addTask" method="post"> 
+            <fieldset>
+                <legend>TODO Task</legend>
+                <div class="pure-control-group">
+                    <label for="task">TODO</label>
+                    <input id="task" name="task" type="text" placeholder="Describe task here" autofocus required/>
+                    <input id="Detalies" name="Detalies" type="text" placeholder="Detalies"/>  
+                    <input type="submit" class="pure-button pure-button-primary" name ="Task" value="addTask"/>            
+                </div>                                        
+            </fieldset>                    
+        </form>
+
+         <form id = "SubTask" class="pure-form pure-form-aligned" action="addSubTask" method="post"> 
+            <fieldset>
+                <legend>TODO SubTask</legend>
+                <div class="pure-control-group">
+                    <label for="SubTask">TODO SubTask</label>
+                    <input id="SubTask" name="idSubTask" type="number" placeholder="Number task" autofocus required/> 
+                    <input id="SubTask" name="TextSubTask" type="text" placeholder="Describe SubTask here" autofocus required/>
+                    <input id="Detalies" name="Detalies" type="text" placeholder="Detalies"/> 
+                    <input type="submit" class="pure-button pure-button-primary" name ="SubTask" value="addSubTask"/>                  
+                </div>                                        
+            </fieldset>                    
+        </form>
+
+        <form class="pure-form" action="reopen" method="post"> 
+            <fieldset>
+                <div class="pure-controls">                 
+                    <input type="submit" class="pure-button button-error" name ="reopen" value="reopen"/>
+                    <input id="Reopen" name="Reopen" type="text" placeholder="number_id" autofocus required/> 
+                </div>      
+            </fieldset>
+        </form>
+
+
+        <form class="pure-form" action="clear" method="post"> 
+            <fieldset>
+                <div class="pure-controls">    
+                    <style scoped="">          
+                        .button-error { background: rgb(202, 60, 60); }                   
+                    </style>                
+                    <input type="submit" class="pure-button button-error" name ="clear" value="clear"/>
+                    <input id="DelTask" name="DelTaskSub" type="text" placeholder="number_id" autofocus required/> 
+                    <label for="DelTask">"ALL" - удалить все</label>
+                </div>      
+            </fieldset>
+        </form>
+
+
+        <table class="pure-table" width="50%" >
+            <thead>
+                <tr>
+                    <th width="15%">Task/SubTask</th><th width="5%">Id</th><th>Description</th><th width="25%">Status</th>
+                </tr>
+            </thead>
+      
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{" TASK "}}</td>
+                        <td>{{ task.id }}</td>
+                        <td> 
+                            {{ task.text }}
+                            <details>
+                            <summary>Details</summary>
+                            {{task.details}}
+                            </details>
+
+                        </td>
+                        {% if task.is_done %}
+                            <td style="background: green; color: black;">Complete <br /> {{task.DateTime}}   </td> 
+                        {% else %}
+                            <td style="background: red; color: black;">In Progress <a href="done/{{task.id}}">Done</a>  <br /> {{task.DateTime}} </td> 
+                        {% endif %}
+                        
+                    </tr>
+                
+                            {% for subtask in SubTasks %}
+                                
+                                    {%  if subtask.id_subtask == task.id   %}
+                                        
+                                                
+                                        </tr>    
+                                            <td>{{" SUBTASK "}}</td>
+                                            <td>{{ subtask.id }}</td>
+                                            <td>
+                                                {{ subtask.text }}
+                                                <details>
+                                                <summary>Details</summary>
+                                                {{subtask.details}}
+                                                </details>
+                                            </td>
+                                            
+                                            {% if subtask.is_done %}
+                                            
+                                            <td style="background: green; color: black;">Complete  <br /> {{subtask.DateTime}} </td> 
+                                            {% else %}
+                                                <td style="background: red; color: black;">In Progress <a href="done/{{subtask.id}}">Done</a> <br /> {{subtask.DateTime}}  </td> 
+                                            {% endif %}
+                                        
+                                        </tr>
+
+                                    
+                                    {% endif %}
+			
+            
+                            {% endfor %}
+             
+                {% endfor %}                          
+
+
+               
+            </tbody>
+        </table>
+
+        
+         <br><br><br> 
+
+    </body>
+</html>
